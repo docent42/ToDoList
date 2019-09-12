@@ -1,11 +1,7 @@
 $(function(){
     appendTask = function(data){
-        var taskCode = '<a href="#" class="task-link" data-id="' + data.id + '">' + data.name + '</a><a href="#" class="task-del" data-id="' + data.id + '">X</a><br>';
+        var taskCode = '<a href="#" class="task-link" data-id="' + data.id + '">' + data.name + '</a><span>   </span><a href="#" class="task-del" data-id="' + data.id + '">delete</a><br>';
         $('#task-list').append('<div class="task">' + taskCode + '</div>');
-    };
-    appendTaskResp = function(data){
-        var taskDate = '<a href="#" class="task-link" data-id="' + data.id + '">' + data.name + ' (выполнить до ' + data.date + ')</a> <a href="#" class="task-del" data-id="' + data.id + '">X</a><br>';
-        $('#task-list').append('<div class="task">' + taskDate + '</div>');
     };
 
     function loadTasks() {
@@ -16,6 +12,8 @@ $(function(){
             }
         });
     }
+
+$('#todo-form').addClass('not-visible')
 
 //Loading tasks on load page
     loadTasks();
@@ -38,14 +36,14 @@ $(function(){
     });
 
     //Getting task
-    $(document).on('click', '.task-link', function(){
+    $(document).on('click','.task-link', function(){
         var link = $(this);
         var taskId = link.data('id');
         $.ajax({
             method: "GET",
-            url: '/task/' + taskId,
+            url: '/tasks/' + taskId,
             success: function(response){
-                var code = '<span>Ответственный:<i><a href="#" class="task-resp" data-id="' + taskId + '">' + response.responsible + '</a></i></span>';
+                var code = '<span> Приоритет:' + response.priority + '</span>';
                 link.parent().append(code);
             },
             error: function(response){
@@ -57,34 +55,13 @@ $(function(){
         return false;
     });
 
-    //Getting tasks for responsible
-    $(document).on('click', '.task-resp', function(){
-        var link = $(this);
-        var taskId = link.data('id');
-        $.ajax({
-            method: "GET",
-            url: '/tasks/responsible/' + taskId,
-            success: function(response){
-                $('#task-list').html('<div>Задачи для сотрудника: <b>' + response[0].responsible + '</b></div>');
-                for(i in response) {
-                    appendTaskResp(response[i]);
-                }
-            },
-            error: function(response){
-                if(response.status == 404) {
-                    alert('Задача не найдена!');
-                }
-            }
-        });
-        return false;
-    });
     //Remove task
     $(document).on('click', '.task-del', function(){
         var link = $(this);
         var taskId = link.data('id');
         $.ajax({
             method: "DELETE",
-            url: '/task/' + taskId,
+            url: '/tasks/' + taskId,
             success: function(response){
               link.parent().remove();
             },
