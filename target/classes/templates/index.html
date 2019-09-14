@@ -26,7 +26,7 @@
     <div id="task-list">
         <div th:each="task : ${tasks}">
             <a href="#" class="task-link" th:attr="data-id=${task.id}" th:text="${task.name}"></a><span>  </span>
-            <a href="#" class="task-del" th:attr="data-id=${task.id}" th:text="X"></a>
+            <a href="#" class="task-del" th:attr="data-id=${task.id}" th:text="delete"></a>
         </div>
     </div>
 </body>
