@@ -6,7 +6,7 @@ $(function(){
 
     function loadTasks() {
         $.get('/tasks/', function (response) {
-            $('#task-list').html('');
+           // $('#task-list').html('');
             for (i in response) {
                 appendTask(response[i]);
             }
@@ -67,11 +67,11 @@ $('#todo-form').addClass('not-visible')
             },
             error: function(response){
                 if(response.status == 404) {
-                    alert('Задача не найдена!');
+                    alert('произожла задница!');
                 }
             }
         });
-        return false;
+        return true;
     });
 
     //Adding task
