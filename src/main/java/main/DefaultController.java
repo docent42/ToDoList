@@ -1,22 +1,30 @@
 package main;
 
+import main.model.Task;
+import main.model.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Random;
+import java.util.ArrayList;
 
-@RestController
+
+@Controller
 public class DefaultController
 {
+    @Autowired
+    private
+    TaskRepository taskRepository;
+
     @RequestMapping("/")
-    public String index()
+    public String index(Model model)
     {
-        LocalDateTime today = LocalDateTime.now();
-        return "<font size=\"+3\">Домашнее задание 12.1<br>" +
-                today.format(DateTimeFormatter.ofPattern("Сегодня: d MMMM uuuu г. Сейчас: HH:mm:ss")) +
-                "<br> Случайное число: " +
-                new Random().nextInt() + "</font>";
+        Iterable<Task> taskIterable = taskRepository.findAll();
+        ArrayList<Task> tasks = new ArrayList<>();
+        taskIterable.forEach(tasks::add);
+        model.addAttribute("tasks",tasks);
+
+        return "index";
     }
 }

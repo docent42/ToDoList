@@ -4,19 +4,19 @@ $(function(){
         $('#task-list').append('<div class="task">' + taskCode + '</div>');
     };
 
-    function loadTasks() {
-        $.get('/tasks/', function (response) {
-           // $('#task-list').html('');
-            for (i in response) {
-                appendTask(response[i]);
-            }
-        });
-    }
+//    function loadTasks() {
+//        $.get('/tasks/', function (response) {
+//           // $('#task-list').html('');
+//            for (i in response) {
+//                appendTask(response[i]);
+//            }
+//        });
+//    }
 
 $('#todo-form').addClass('not-visible')
 
 //Loading tasks on load page
-    loadTasks();
+    //loadTasks();
 
     //Show adding task form
     $('#show-add-task-form').click(function(){
