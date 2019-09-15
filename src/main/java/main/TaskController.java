@@ -7,9 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import main.model.Task;
 
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class TaskController
@@ -20,32 +19,28 @@ public class TaskController
     @GetMapping(value = "/tasks/")
     public List<Task> list()
     {
-        Iterable<Task> taskIterable = taskRepository.findAll();
-        ArrayList<Task> tasks = new ArrayList<>();
-        taskIterable.forEach(tasks::add);
-        return tasks;
+        return TaskStorage.getAllTasks(taskRepository);
     }
 
     @PostMapping(value = "/tasks/")
     public int add(Task task)
     {
-       Task newTask = taskRepository.save(task);
-        return newTask.getId();
+        return TaskStorage.addTask(task,taskRepository);
     }
 
     @GetMapping("/tasks/{id}")
     public ResponseEntity get(@PathVariable int id)
     {
-        Optional<Task> optionalTask = taskRepository.findById(id);
-        if (!optionalTask.isPresent())
+        Task task = TaskStorage.getTask(id,taskRepository);
+        if (task == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        return new ResponseEntity(optionalTask.get(),HttpStatus.OK);
+        return  new ResponseEntity(task,HttpStatus.OK);
     }
 
     @DeleteMapping("/tasks/{id}")
     public ResponseEntity delete(@PathVariable int id)
     {
-        taskRepository.deleteById(id);
+       TaskStorage.removeTask(id,taskRepository);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }

@@ -1,35 +1,36 @@
 package main;
 
 import main.model.Task;
-
+import main.model.TaskRepository;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Optional;
+
 
 class TaskStorage
 {
-    private static int currentId = 1;
-    private static HashMap<Integer,Task> tasks = new HashMap<>();
 
-    static List<Task> getAllTasks() {
-        return new ArrayList<>(tasks.values());
+    static ArrayList<Task> getAllTasks(TaskRepository taskRepository)
+    {
+        Iterable<Task> taskIterable = taskRepository.findAll();
+        ArrayList<Task> tasks = new ArrayList<>();
+        taskIterable.forEach(tasks::add);
+        return tasks;
     }
 
-    static int addTask(Task task)
+    static int addTask(Task task,TaskRepository taskRepository)
     {
-        int id = currentId++;
-        task.setId(id);
-        tasks.put(id,task);
-        return id;
+         Task newTask = taskRepository.save(task);
+        return newTask.getId();
     }
 
-    static Task getTask(int taskId)
+    static Task getTask(int taskId,TaskRepository taskRepository)
     {
-        return tasks.getOrDefault(taskId, null);
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        return optionalTask.orElse(null);
     }
 
-    public static void removeTask(int taskId)
+    static void removeTask(int taskId,TaskRepository taskRepository)
     {
-        tasks.remove(taskId);
+        taskRepository.deleteById(taskId);
     }
 }
