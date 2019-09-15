@@ -1,7 +1,7 @@
 package main;
 
 import main.model.Task;
-import main.model.TaskRepository;
+import main.repository.TaskRepository;
 import java.util.ArrayList;
 import java.util.Optional;
 

@@ -1,6 +1,7 @@
-package main;
+package main.controller;
 
-import main.model.TaskRepository;
+import main.repository.TaskRepository;
+import main.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,33 +13,34 @@ import java.util.List;
 public class TaskController
 {
     @Autowired
-    private TaskRepository taskRepository;
+    private TaskService taskService;
 
     @GetMapping(value = "/tasks/")
     public List<Task> list()
     {
-        return TaskStorage.getAllTasks(taskRepository);
+        return taskService.listTask();
     }
 
     @PostMapping(value = "/tasks/")
     public int add(Task task)
     {
-        return TaskStorage.addTask(task,taskRepository);
+        return taskService.addTask(task).getId();
     }
 
     @GetMapping("/tasks/{id}")
     public ResponseEntity get(@PathVariable int id)
     {
-        Task task = TaskStorage.getTask(id,taskRepository);
+        Task task = taskService.getTask(id);
         if (task == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        return  new ResponseEntity(task,HttpStatus.OK);
+        else
+            return  new ResponseEntity(task,HttpStatus.OK);
     }
 
     @DeleteMapping("/tasks/{id}")
     public ResponseEntity delete(@PathVariable int id)
     {
-       TaskStorage.removeTask(id,taskRepository);
+        taskService.deleteTask(id);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }
