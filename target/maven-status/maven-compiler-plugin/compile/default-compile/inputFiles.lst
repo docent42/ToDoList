@@ -1,6 +1,8 @@
 G:\Java_work\Block12\toDoList\src\main\java\main\Main.java
-G:\Java_work\Block12\toDoList\src\main\java\main\DefaultController.java
-G:\Java_work\Block12\toDoList\src\main\java\main\model\TaskRepository.java
+G:\Java_work\Block12\toDoList\src\main\java\main\service\TaskService.java
+G:\Java_work\Block12\toDoList\src\main\java\main\controller\TaskController.java
 G:\Java_work\Block12\toDoList\src\main\java\main\model\Task.java
-G:\Java_work\Block12\toDoList\src\main\java\main\TaskController.java
+G:\Java_work\Block12\toDoList\src\main\java\main\controller\DefaultController.java
+G:\Java_work\Block12\toDoList\src\main\java\main\repository\TaskRepository.java
 G:\Java_work\Block12\toDoList\src\main\java\main\TaskStorage.java
+G:\Java_work\Block12\toDoList\src\main\java\main\service\impl\TaskServiceImpl.java
